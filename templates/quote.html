@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Quote
+{% endblock %}
+
+{% block main %}
+    <h1 class="pb-3">Stock Price Checker</h1>
+    <form id="quote-form" class="d-flex gap-2 justify-content-center mb-3" action="/quote" method="post">
+        <input class="form-control flex-grow-0 w-25" id="quote-symbol" autocomplete="off" autofocus name="symbol" placeholder="Company Name" type="text">
+        <button type="submit" class="btn btn-primary" value="Quote"></button>
+    </form>
+    <div id="quote-result" class="alert w-50 mx-auto text-center d-none"></div>
+
+    <script>
+        document.getElementById('quote-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            let symbol = document.getElementById('symbol');
+            let resultBox = document.getElementById('quote-result');
+
+            // Clear previous messages
+            resultBox.classList.add('d-none');
+            resultBox.classList.remove('alert-success', 'alert-danger');
+
+            // Perform AJAX request
+            fetch("/quote", {
+                method: "POST",
+                body: new FormData(this),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    // Show error message
+                    resultBox.classList.add('alert-danger');
+                    resultBox.textContent = "❌ " + data.error;
+                } else {
+                    // Show stock price
+                    resultBox.classList.add("alert-success");
+                    resultBox.innerHTML = `✅ ${data.name} (${data.symbol}) costs <strong>${data.price}</strong>`;
+                }
+                resultBox.classList.remove("d-none");
+            })
+            .catch(error => {
+                resultBox.classList.add("alert-danger");
+                resultBox.textContent = "❌ An error occurred.";
+                resultBox.classList.remove("d-none");
+            });
+        });
+    </script>
+{% endblock %}

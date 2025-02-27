@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block main %}
+    <h1 class="pp-3">Hello, {{ name }}</h1>
+    {% if holdings %}
+    <h3>Your holdings:</h3>
+    <table class="table table-striped w-75 m-auto">
+        <thead>
+            <tr>
+              <th scope="col">Symbol</th>
+              <th scope="col">Name</th>
+              <th scope="col">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for holding in holdings %}
+            <tr>
+                <td>{{ holding.symbol }}</td>
+                <td>{{ holding.name }}</td>
+                <th scope="row">{{ holding.amount }}</th>
+            </tr>
+            {% endfor %}
+          </tbody>
+    </table>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block main %}
+    <h1 class="pb-3">Register</h1>
+    <form id="register-form" action="/register" method="post">
+        <div class="mb-3">
+            <input autocomplete="off" autofocus class="form-control mx-auto w-auto" name="username" id="username" placeholder="Username" type="text">
+        </div>
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto" name="password" id="password" placeholder="Password" type="password">
+        </div>
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto" name="confirmation" id="password-verify" placeholder="Re-type Password" type="password">
+        </div>
+        <button class="btn btn-primary" type="submit">Register</button>
+    </form>
+    <div id="register-error" class="container mt-3 w-25" hidden>
+        <div class="alert alert-danger" role="alert"></div>
+    </div>
+    <script>
+        document.getElementById('register-form').addEventListener('submit', function (event) {
+            let username = document.getElementById('username').value.trim();
+            let password = document.getElementById('password').value.trim();
+            let password_verify = document.getElementById('confirmation').value.trim();
+            let error_container = document.getElementById('register-error');
+            let error = error_container.firstElementChild;
+
+            // Username should not be empty
+            if (username === "" || username == "") {
+                error.innerHTML = "Error: username cannot be blank!";
+                error_container.hidden = false;
+                event.preventDefault();
+            }
+            // Passwords should match
+            else if (password != password_verify) {
+                error.innerHTML = "Error: password doesn't match!";
+                error_container.hidden = false;
+                event.preventDefault();
+            }
+            else if (password === "") {
+                error.innerHTML = "Error: password cannot be blank!";
+                error_container.hidden = false;
+                event.preventDefault();
+            }
+            console.log("Done running checking script!");
+        });
+    </script>
+{% endblock %}

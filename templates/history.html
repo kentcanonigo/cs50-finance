@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    History
+{% endblock %}
+
+{% block main %}
+    <h3>Transaction History:</h3>
+    <table class="table w-75 m-auto">
+        <thead>
+            <tr>
+              <th scope="col">Symbol</th>
+              <th scope="col">Name</th>
+              <th scope="col">Type</th>
+              <th scope="col">Amount</th>
+              <th scope="col">Price</th>
+              <th scope="col">Total</th>
+              <th scope="col">Timestamp</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for transaction in transactions %}
+            <tr class="{% if transaction.type == 'BUY' %}table-success{% else %}table-danger{% endif %}">
+                <td>{{ transaction.symbol }}</td>
+                <td>{{ transaction.name }}</td>
+                <td>{{ transaction.type }}</td>
+                <td>{{ transaction.shares }}</td>
+                <td>{{ transaction.price | usd }}</td>
+                <td>{{ (transaction.price * transaction.shares) | usd  }}</td>
+                <td>{{ transaction.timestamp }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+      </table>
+{% endblock %}
